@@ -2,69 +2,52 @@
 # It takes in two hard-coded images for processing
 
 
+from blending import Blender
+import glob
 import cv2
 import numpy as np
 import os
-
-GOOD_MATCH_PERCENT = 0.15 
-
-
-# Currently hard-coded images.  
-# This will have to be updated to handled many images, not sure how the algorithm would handle that.
-os.chdir("virotour/opencv/images")
-image1 = cv2.imread("1.jpg")
-image2 = cv2.imread("2.jpg")
-
-    
-# Convert the images to grayscale
-imgGray1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
-imgGray2 = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
-
-# Detect ORB features and compute descriptors
-orb = cv2.ORB_create()
-keypoints_1, descriptors_1 = orb.detectAndCompute(imgGray1, None)
-keypoints_2, descriptors_2 = orb.detectAndCompute(imgGray2, None)
-
-# Match features
-bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
-matches = bf.match(descriptors_1, descriptors_1)
-matches = sorted(matches, key=lambda x: x.distance)
-matched_image = cv2.drawMatches(image1, keypoints_1, image2, keypoints_2, matches, None, flags=2)
-
-#Find the best matches
-numGoodMatches = int(len(matches) * GOOD_MATCH_PERCENT)
-matches = matches[:numGoodMatches]
-
-    
-
-# Filter out the good matches   
-matched_image = cv2.drawMatches(image1, keypoints_1, image2, keypoints_2, matches, None)
-cv2.imwrite("matches.jpg", matched_image)
-
-# Extract location of good matches
-points1 = np.zeros((len(matches), 2), dtype=np.float32)
-points2 = np.zeros((len(matches), 2), dtype=np.float32)
-
-# Extract the keypoints from the good matches
-for i, match in enumerate(matches):
-    points1[i, :] = keypoints_1[match.queryIdx].pt
-    points2[i, :] = keypoints_2[match.trainIdx].pt
+from tqdm import tqdm
+import itertools
 
 
-# Find the homography matrix
-h, mask = cv2.findHomography(points2, points1, cv2.RANSAC)
-    
+def remove_filename_from_file(input):
+	return os.path.splitext(input)[0]
 
-# Warp the second image to align with the first image
-# I don't think this part is working properly but do we need it?
-height, width = image2.shape[:2]
-mod_photo = cv2.warpPerspective(image2, h, (width, height))
 
-# Add hotspots to transition between the two images
-# Code to add hotspots goes here 
-# This is not done.  Not sure what to do here?
+def compare(imageName1, imageName2, nFeaturesReturn = 30):
+	'''
+	takes in two images, and returns a set of correspondences between the two images matched using ORB features,
+	 sorted from best to worst match using an L2 norm distance.
+	'''
+	# Currently hard-coded images.
+	# This will have to be updated to handled many images, not sure how the algorithm would handle that.
+	img1 = cv2.imread(imageName1)
+	img2 = cv2.imread(imageName2)
+	id1 = remove_filename_from_file(imageName1)
+	id2 = remove_filename_from_file(imageName2)
 
-# Show the result   
-# The transformed image is not quite working
-cv2.imshow("Result",mod_photo) 
-cv2.imwrite("panorama.jpg", mod_photo)
+	kp1, des1 = orb.detectAndCompute(img1,None)
+	kp2, des2 = orb.detectAndCompute(img2,None)
+	matches = bf.match(des1,des2)
+	matches = sorted(matches, key = lambda x:x.distance)
+	correspondences = []
+	for match in matches:
+		correspondences.append((kp1[match.queryIdx].pt, kp2[match.trainIdx].pt))
+	print("{} v. {} found {} matches".format(id1, id2, len(correspondences)))
+	# src = np.float32([ m[0] for m in correspondences[:nFeaturesReturn] ]).reshape(-1,1,2)
+	# dst = np.float32([ m[1] for m in correspondences[:nFeaturesReturn] ]).reshape(-1,1,2)
+	return np.array(correspondences[:nFeaturesReturn])
+
+if __name__ == "__main__":
+	os.chdir("./images")
+	orb = cv2.ORB_create()
+	bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+
+	num_images = 7
+	images = ["{}.jpg".format(x) for x in range(1, num_images + 1)]
+	print(images)
+	for i, j in itertools.product(images, images):
+		if i != j:
+			compare(i, j)
+			# break
