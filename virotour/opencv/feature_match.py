@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 import os
 
-GOOD_MATCH_PERCENT = 0.15 
+GOOD_MATCH_PERCENT = 0.95 
 
 
 # Currently hard-coded images.  
@@ -30,6 +30,8 @@ bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
 matches = bf.match(descriptors_1, descriptors_1)
 matches = sorted(matches, key=lambda x: x.distance)
 matched_image = cv2.drawMatches(image1, keypoints_1, image2, keypoints_2, matches, None, flags=2)
+keypoint_image = cv2.drawKeypoints(imgGray1,keypoints_1, imgGray2, flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+
 
 #Find the best matches
 numGoodMatches = int(len(matches) * GOOD_MATCH_PERCENT)
@@ -37,9 +39,10 @@ matches = matches[:numGoodMatches]
 
     
 
-# Filter out the good matches   
-matched_image = cv2.drawMatches(image1, keypoints_1, image2, keypoints_2, matches, None)
+# Filter out the good matches, get the two best matches
+matched_image = cv2.drawMatches(image1, keypoints_1, image2, keypoints_2, matches[:2], None)
 cv2.imwrite("matches.jpg", matched_image)
+cv2.imwrite("sift_keypoints.jpg", keypoint_image)
 
 # Extract location of good matches
 points1 = np.zeros((len(matches), 2), dtype=np.float32)
