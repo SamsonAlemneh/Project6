@@ -21,16 +21,17 @@
                 "blurred": { "source": [ "img_panoramic_blurred.png" ] }
               }
             ],
+            "transitional_hotspots" : [ "location_id_2", "location_id_3" ],
+            "informational_hotspots" : [
+                {
+                  "position": { "x": 0, "y": 0, "z": 0 },
+                  "content": ["<html><body> … </body></html>"]
+                }
+            ],
             "text" : [
                 {
                   "position": { "x": 0, "y": 0, "z": 0 },
                   "content": ["This painting depicts the struggles of…"]
-                }
-            ],
-            "informational_hotspot" : [
-                {
-                  "position": { "x": 0, "y": 0, "z": 0 },
-                  "content": ["<html><body> … </body></html>"]
                 }
             ]
           }
