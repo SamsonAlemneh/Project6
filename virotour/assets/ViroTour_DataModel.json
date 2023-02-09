@@ -16,9 +16,7 @@
                     }
                   }
                 },
-                "original": {
-                  "source": [ "img_lower_left.png", "img_lower_middle.png", "img_lower_right.png", "img_upper_left.png", "img_upper_middle.png", "img_upper_right.png" ]
-                },
+                "original": { "source": [ "img_lower_left.png", "img_lower_middle.png", "img_lower_right.png", "img_upper_left.png", "img_upper_middle.png", "img_upper_right.png" ] },
                 "panoramic": { "source": [ "img_panoramic.png" ] },
                 "blurred": { "source": [ "img_panoramic_blurred.png" ] }
               }
