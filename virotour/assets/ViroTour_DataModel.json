@@ -1,0 +1,36 @@
+{
+  "data": {
+    "model": {
+      "locations": [
+        {
+          "id": "location_id_1",
+          "position": {
+            "x": 0, "y": 0, "z": 0
+          },
+          "images": [
+            {
+              "state" :  {
+                "setting" : "blurred",
+                "filters" : {
+                  "glow" : {
+                    "strength" : 1,
+                    "radius" : 25 
+                  }
+                }
+              },
+              "original": {
+                "source": [ "img_lower_left.png", "img_lower_middle.png", "img_lower_right.png", "img_upper_left.png", "img_upper_middle.png", "img_upper_right.png" ]
+              },
+              "panoramic": {
+                "source": [ "img_panoramic.png" ]
+              },
+              "blurred": {
+                "source": [ "img_panoramic_blurred.png" ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
