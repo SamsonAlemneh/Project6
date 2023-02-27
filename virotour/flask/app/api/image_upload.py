@@ -48,12 +48,22 @@ def api_add_tour_images(tour_name):
         }
         return jsonify(payload), 200
 
+
 @app.route('/api/tour/images/<string:tour_name>/<int:location_id>', methods=['GET'])
 def api_get_tour_images(tour_name, location_id):
-    # TODO: use method parameters above to return the correct result
     result = {}
-    payload = {
-        'count': 0,
-        'server_file_paths': result
-    }
+    # Get Tour
+    tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
+    # Get Location(s)
+    locations = db.session.query(Location).filter(Location.tour_id == tour.id).all()
+    for location in locations:
+        # Get Images
+        images = db.session.query(Image).filter(Image.location_id == location.location_id).all()
+        result = [{
+            'file_path': image.file_path
+        } for image in images]
+        payload = {
+            'count': len(result),
+            'server_file_paths': result
+        }
     return jsonify(payload), 200
