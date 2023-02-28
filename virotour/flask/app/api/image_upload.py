@@ -54,13 +54,13 @@ def api_get_tour_images(tour_name, location_id):
     result = list()
     # Get Tour
     tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
-    # Get Location(s)
-    locations = db.session.query(Location).filter(Location.tour_id == tour.id).all()
-    for location in locations:
-        # Get Images
-        images = db.session.query(Image).filter(Image.location_id == location.location_id).all()
-        for image in images:
-            result.append(image.file_path)
+    # Get Location
+    location = db.session.query(Location).filter((Location.tour_id == tour.id) &
+                                                 (Location.location_id == location_id)).first()
+    # Get Images
+    images = db.session.query(Image).filter(Image.location_id == location.location_id).all()
+    for image in images:
+        result.append(image.file_path)
 
     payload = {
         'count': len(result),
