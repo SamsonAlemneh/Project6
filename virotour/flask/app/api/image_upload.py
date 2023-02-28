@@ -37,7 +37,7 @@ def api_add_tour_images(tour_name):
                 os.makedirs(target_path, exist_ok=True)
                 file.save(target_file)
 
-                image = Image(location.location_id, target_file)
+                image = Image(location.location_id, result[filename])
                 db.session.add(image)
                 db.session.commit()
 
@@ -51,7 +51,7 @@ def api_add_tour_images(tour_name):
 
 @app.route('/api/tour/images/<string:tour_name>/<int:location_id>', methods=['GET'])
 def api_get_tour_images(tour_name, location_id):
-    result = {}
+    result = list()
     # Get Tour
     tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
     # Get Location(s)
@@ -59,11 +59,11 @@ def api_get_tour_images(tour_name, location_id):
     for location in locations:
         # Get Images
         images = db.session.query(Image).filter(Image.location_id == location.location_id).all()
-        result = [{
-            'file_path': image.file_path
-        } for image in images]
-        payload = {
-            'count': len(result),
-            'server_file_paths': result
-        }
+        for image in images:
+            result.append(image.file_path)
+
+    payload = {
+        'count': len(result),
+        'server_file_paths': result
+    }
     return jsonify(payload), 200
