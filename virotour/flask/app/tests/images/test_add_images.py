@@ -51,3 +51,21 @@ def test_add_images_multiple_locations(client):
         }
         id += 1
 
+    data = get_images(client, tour_name, 1)
+    assert data['count'] == 1
+    assert data['server_file_paths'] == [
+        'uploads/tour_id=1/location_id=1/S1.jpg'
+    ]
+
+    data = get_images(client, tour_name, 2)
+    assert data['count'] == 1
+    assert data['server_file_paths'] == [
+        'uploads/tour_id=1/location_id=2/S2.jpg'
+    ]
+
+    data = get_images(client, tour_name, 5)
+    assert data['count'] == 1
+    assert data['server_file_paths'] == [
+        'uploads/tour_id=1/location_id=5/S5.jpg'
+    ]
+
