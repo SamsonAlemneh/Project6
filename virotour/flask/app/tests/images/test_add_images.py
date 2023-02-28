@@ -29,6 +29,13 @@ def test_add_images_to_tour(client):
 
     data = get_images(client, "Tour 1", 1)
     assert data['count'] == 5
+    assert data['server_file_paths'] == [
+        'uploads/tour_id=1/location_id=1/S1.jpg',
+        'uploads/tour_id=1/location_id=1/S2.jpg',
+        'uploads/tour_id=1/location_id=1/S3.jpg',
+        'uploads/tour_id=1/location_id=1/S4.jpg',
+        'uploads/tour_id=1/location_id=1/S5.jpg'
+    ]
 
 def test_add_images_multiple_locations(client):
     """Split input images to simulate different locations"""
