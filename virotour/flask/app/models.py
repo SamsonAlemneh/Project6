@@ -42,3 +42,23 @@ class Image(db.Model):
     def __repr__(self):
         return '<Images %r>' % self.image_id
     
+class Text(db.Model):
+    __tablename__ = 'extracted_text_table_v1'
+
+    text_id = db.Column(db.Integer, primary_key=True)
+    location_id = db.Column(db.Integer)
+    text_content = db.Column(db.String(255))
+    position_x = db.Column(db.Integer)
+    position_y = db.Column(db.Integer)
+    position_z = db.Column(db.Integer)
+
+    def __init__(self, location_id, text_content, position_x, position_y, position_z):
+        self.location_id = location_id
+        self.text_content = text_content
+        self.position_x = position_x
+        self.position_y = position_y
+        self.position_z = position_z
+
+    def __repr__(self):
+        return '<Text %r>' % self.text_id
+    
