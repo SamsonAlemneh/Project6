@@ -20,21 +20,21 @@ def test_add_images_to_tour(client):
 
     assert data['tour_id'] == 1
     assert data['server_file_paths'] == {
-        'S1.jpg': 'uploads/tour_id=1/location_id=1/S1.jpg',
-        'S2.jpg': 'uploads/tour_id=1/location_id=1/S2.jpg',
-        'S3.jpg': 'uploads/tour_id=1/location_id=1/S3.jpg',
-        'S4.jpg': 'uploads/tour_id=1/location_id=1/S4.jpg',
-        'S5.jpg': 'uploads/tour_id=1/location_id=1/S5.jpg'
+        'S1.jpg': 'raw_images/T_1_L_1_S1.jpg',
+        'S2.jpg': 'raw_images/T_1_L_1_S2.jpg',
+        'S3.jpg': 'raw_images/T_1_L_1_S3.jpg',
+        'S4.jpg': 'raw_images/T_1_L_1_S4.jpg',
+        'S5.jpg': 'raw_images/T_1_L_1_S5.jpg'
     }
 
     data = get_images(client, "Tour 1", 1)
     assert data['count'] == 5
     assert data['server_file_paths'] == [
-        'uploads/tour_id=1/location_id=1/S1.jpg',
-        'uploads/tour_id=1/location_id=1/S2.jpg',
-        'uploads/tour_id=1/location_id=1/S3.jpg',
-        'uploads/tour_id=1/location_id=1/S4.jpg',
-        'uploads/tour_id=1/location_id=1/S5.jpg'
+        'raw_images/T_1_L_1_S1.jpg',
+        'raw_images/T_1_L_1_S2.jpg',
+        'raw_images/T_1_L_1_S3.jpg',
+        'raw_images/T_1_L_1_S4.jpg',
+        'raw_images/T_1_L_1_S5.jpg'
     ]
 
 def test_add_images_multiple_locations(client):
@@ -47,25 +47,25 @@ def test_add_images_multiple_locations(client):
     for image_path in all_image_paths:
         data = upload_images(client, tour_name, [image_path])
         assert data['server_file_paths'] == {
-            f'S{id}.jpg': f'uploads/tour_id=1/location_id={id}/S{id}.jpg'
+            f'S{id}.jpg': f'raw_images/T_1_L_{id}_S{id}.jpg'
         }
         id += 1
 
     data = get_images(client, tour_name, 1)
     assert data['count'] == 1
     assert data['server_file_paths'] == [
-        'uploads/tour_id=1/location_id=1/S1.jpg'
+        'raw_images/T_1_L_1_S1.jpg'
     ]
 
     data = get_images(client, tour_name, 2)
     assert data['count'] == 1
     assert data['server_file_paths'] == [
-        'uploads/tour_id=1/location_id=2/S2.jpg'
+        'raw_images/T_1_L_2_S2.jpg'
     ]
 
     data = get_images(client, tour_name, 5)
     assert data['count'] == 1
     assert data['server_file_paths'] == [
-        'uploads/tour_id=1/location_id=5/S5.jpg'
+        'raw_images/T_1_L_5_S5.jpg'
     ]
 

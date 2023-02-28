@@ -25,17 +25,16 @@ def api_add_tour_images(tour_name):
             if file and allowed_file(file.filename):
                 filename_raw = file.filename
                 filename = os.path.basename(filename_raw)
-                target_path = os.path.join(app.config['UPLOAD_FOLDER'],
-                                           'tour_id=', str(tour.id),
-                                           'location_id=', str(location.location_id))
-                target_file = os.path.join(target_path, filename)
+                target_path = os.path.join(app.config['UPLOAD_FOLDER'], 'raw_images/')
+                target_file = f'T_{tour.id}_L_{location.location_id}_{filename}'
+                target_file_full = os.path.join(target_path, target_file)
 
                 # To return to user
-                result[filename] = f'uploads/tour_id={tour.id}/location_id={location.location_id}/{filename}'
+                result[filename] = f'raw_images/{target_file}'
 
                 # Make directory & save
                 os.makedirs(target_path, exist_ok=True)
-                file.save(target_file)
+                file.save(target_file_full)
 
                 image = Image(location.location_id, result[filename])
                 db.session.add(image)
