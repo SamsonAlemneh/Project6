@@ -37,7 +37,7 @@ def api_add_tour_images(tour_name):
                 os.makedirs(target_path, exist_ok=True)
                 file.save(target_file)
 
-                image = Image(location.location_id, target_path)
+                image = Image(location.location_id, target_file)
                 db.session.add(image)
                 db.session.commit()
 
