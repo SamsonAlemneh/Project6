@@ -323,7 +323,7 @@ def main(in_args):
     for name in img_names:
         full_path_of_file = os.path.abspath(os.path.join(app.config["UPLOAD_FOLDER"], name))
 
-        full_img = cv.imread(full_path_of_file)
+        full_img = cv.imread(cv.samples.findFile(full_path_of_file))
 
         if full_img is None:
             print("Cannot read image ", name)
@@ -456,7 +456,7 @@ def main(in_args):
     timelapser = None
     # https://github.com/opencv/opencv/blob/4.x/samples/cpp/stitching_detailed.cpp#L725 ?
     for idx, name in enumerate(img_names):
-        full_img = cv.imread(name)
+        full_img = cv.imread(os.path.abspath(os.path.join(app.config["UPLOAD_FOLDER"], name)))
         if not is_compose_scale_set:
             if compose_megapix > 0:
                 compose_scale = min(1.0, np.sqrt(compose_megapix * 1e6 / (full_img.shape[0] * full_img.shape[1])))
