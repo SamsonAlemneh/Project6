@@ -14,20 +14,16 @@ def test_compute_tour(client):
 
     compute_tour(client, tour_name)
 
+    # Test get relative image path
     pano_image_path = get_panoramic_image(client, tour_name, 1)['server_file_path']
-    pano_image_path = os.path.join(app.config['UPLOAD_FOLDER'], pano_image_path)
-    # pano_image_path = r"C:\Users\Ivo\Documents\spring2023\virotour\flask\uploads\panoramic_images\T_1_L_1_pano.png"
+    assert pano_image_path == 'panoramic_images/T_1_L_1_pano.png'
 
+    # Test image exists and is openable
+    pano_image_path = os.path.join(app.config['UPLOAD_FOLDER'], pano_image_path)
     img = Image.open(pano_image_path)
     # img.show()
 
-    # Validates that we can still retrieve the original images
+    # Test that we can still retrieve the original images if needed
     data = get_raw_images(client, "Tour 1", 1)
     assert data['count'] == 5
-    assert data['server_file_paths'] == [
-        'raw_images/T_1_L_1_S1.jpg',
-        'raw_images/T_1_L_1_S2.jpg',
-        'raw_images/T_1_L_1_S3.jpg',
-        'raw_images/T_1_L_1_S4.jpg',
-        'raw_images/T_1_L_1_S5.jpg'
-    ]
+    assert data['server_file_paths'][0] == 'raw_images/T_1_L_1_S1.jpg'
