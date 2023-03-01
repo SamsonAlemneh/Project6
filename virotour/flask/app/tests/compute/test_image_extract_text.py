@@ -1,7 +1,5 @@
 from app.api.compute.image_extract_text import image_extract_text
-from app.tests.images.image_utils import upload_images
-from app.tests.images.test_add_images import get_image_paths
-from app.tests.tour.tour_utils import add_tour
+from app.tests.common_utils import add_tour, get_image_paths, upload_images
 
 
 def test_image_extract_text(client):

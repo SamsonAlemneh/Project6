@@ -1,7 +1,5 @@
-from app.tests.compute.compute_utils import compute_tour
-from app.tests.images.image_utils import upload_images
-from app.tests.images.test_add_images import get_image_paths
-from app.tests.tour.tour_utils import add_tour
+from PIL import Image
+from app.tests.common_utils import add_tour, get_image_paths, upload_images, compute_tour, get_panoramic_image
 
 
 def test_compute_tour(client):
@@ -12,4 +10,8 @@ def test_compute_tour(client):
 
     compute_tour(client, tour_name)
 
-    assert True == False
+    pano_image_path = get_panoramic_image(client, tour_name, 1)
+    # pano_image_path = r"C:\Users\Ivo\Documents\spring2023\virotour\flask\uploads\panoramic_images\T_1_L_1_pano.png"
+
+    img = Image.open(pano_image_path)
+    # img.show()

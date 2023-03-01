@@ -1,14 +1,6 @@
 import os
 
-from app.tests.images.image_utils import upload_images_with_resp, upload_images, get_images
-from app.tests.tour.tour_utils import add_tour
-
-
-def get_image_paths(path):
-    image_dir = os.path.join(os.path.dirname(__file__), path)
-    image_list = os.listdir(image_dir)
-    return [f"{image_dir}/{file}" for file in image_list]
-    pass
+from app.tests.common_utils import upload_images, get_raw_images, get_image_paths, add_tour
 
 
 def test_add_images_to_tour(client):
@@ -27,7 +19,7 @@ def test_add_images_to_tour(client):
         'S5.jpg': 'raw_images/T_1_L_1_S5.jpg'
     }
 
-    data = get_images(client, "Tour 1", 1)
+    data = get_raw_images(client, "Tour 1", 1)
     assert data['count'] == 5
     assert data['server_file_paths'] == [
         'raw_images/T_1_L_1_S1.jpg',
@@ -51,19 +43,19 @@ def test_add_images_multiple_locations(client):
         }
         id += 1
 
-    data = get_images(client, tour_name, 1)
+    data = get_raw_images(client, tour_name, 1)
     assert data['count'] == 1
     assert data['server_file_paths'] == [
         'raw_images/T_1_L_1_S1.jpg'
     ]
 
-    data = get_images(client, tour_name, 2)
+    data = get_raw_images(client, tour_name, 2)
     assert data['count'] == 1
     assert data['server_file_paths'] == [
         'raw_images/T_1_L_2_S2.jpg'
     ]
 
-    data = get_images(client, tour_name, 5)
+    data = get_raw_images(client, tour_name, 5)
     assert data['count'] == 1
     assert data['server_file_paths'] == [
         'raw_images/T_1_L_5_S5.jpg'

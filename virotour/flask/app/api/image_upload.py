@@ -48,7 +48,7 @@ def api_add_tour_images(tour_name):
         return jsonify(payload), 200
 
 
-@app.route('/api/tour/images/<string:tour_name>/<int:location_id>', methods=['GET'])
+@app.route('/api/tour/images/raw-images/<string:tour_name>/<int:location_id>', methods=['GET'])
 def api_get_tour_images(tour_name, location_id):
     result = list()
     # Get Tour
@@ -64,5 +64,19 @@ def api_get_tour_images(tour_name, location_id):
     payload = {
         'count': len(result),
         'server_file_paths': result
+    }
+    return jsonify(payload), 200
+
+
+def api_set_panoramic_image(tour_name, location_id, path):
+    """This is an internal call, so there is not a publically facing route."""
+    # TODO
+    return None
+
+
+@app.route('/api/tour/images/panoramic-image/<string:tour_name>/<int:location_id>', methods=['POST', 'GET'])
+def api_get_set_panoramic_image(tour_name, location_id):
+    payload = {
+        'server_file_path': 'TODO'
     }
     return jsonify(payload), 200

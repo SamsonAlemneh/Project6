@@ -1,8 +1,7 @@
 from app.api.compute.neighbors import compute_neighbors
-from app.api.compute.panoramic import compute_panoramic
-from app.tests.images.image_utils import upload_images
+from app.tests.common_utils import add_tour
+from app.tests.common_utils import upload_images
 from app.tests.images.test_add_images import get_image_paths
-from app.tests.tour.tour_utils import add_tour
 
 
 def test_compute_neighbors(client):

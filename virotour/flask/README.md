@@ -81,5 +81,7 @@ Example of REST API endpoints:
 /api/update/tour/<id>  -- [POST/PUT] update tour by id with JSON data payload
 /api/delete/tour/<id>  -- [POST/DELETE] delete tour by id
 /api/tour/add/images/  -- [POST] upload images to server
-/api/tour/images/<string:tour_name>/<int:location_id>  -- [GET] Retrieve raw image paths for a given tour name and location_id
+/api/tour/images/raw-images/<string:tour_name>/<int:location_id>  -- [GET] Retrieve raw image paths for a given tour name and location_id
+/api/tour/images/panoramic/<string:tour_name>/<int:location_id>  -- [GET] Retrieve panoramic image 
+/api/tour/images/panoramic/<string:tour_name>/<int:location_id>  -- [GET] Retrieve panoramic image 
 ```

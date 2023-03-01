@@ -99,6 +99,10 @@ parser.add_argument(
     help="Files to stitch", type=str
 )
 parser.add_argument(
+    '--output_path',
+    help="File to output", type=str
+)
+parser.add_argument(
     '--try_cuda',
     action='store',
     default=False,
@@ -281,7 +285,9 @@ def get_compensator(args):
 def main(in_args):
     args = parser.parse_args(in_args)
     img_names = args.img_names
+    output_path = args.output_path
     print(img_names)
+    print(output_path)
     work_megapix = args.work_megapix
     seam_megapix = args.seam_megapix
     compose_megapix = args.compose_megapix
@@ -520,12 +526,13 @@ def main(in_args):
         result = None
         result_mask = None
         result, result_mask = blender.blend(result, result_mask)
-        cv.imwrite(result_name, result)
-        zoom_x = 600.0 / result.shape[1]
-        dst = cv.normalize(src=result, dst=None, alpha=255., norm_type=cv.NORM_MINMAX, dtype=cv.CV_8U)
-        dst = cv.resize(dst, dsize=None, fx=zoom_x, fy=zoom_x)
-        cv.imshow(result_name, dst)
-        cv.waitKey()
+        full_output_path = os.path.abspath(os.path.join(app.config["UPLOAD_FOLDER"], output_path))
+        cv.imwrite(full_output_path, result)
+        # zoom_x = 600.0 / result.shape[1]
+        # dst = cv.normalize(src=result, dst=None, alpha=255., norm_type=cv.NORM_MINMAX, dtype=cv.CV_8U)
+        # dst = cv.resize(dst, dsize=None, fx=zoom_x, fy=zoom_x)
+        # cv.imshow(result_name, dst)
+        # cv.waitKey()
 
     print("Done")
 
