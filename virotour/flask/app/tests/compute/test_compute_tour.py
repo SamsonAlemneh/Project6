@@ -1,4 +1,7 @@
+import os
+
 from PIL import Image
+from app import app
 from app.tests.common_utils import add_tour, get_image_paths, upload_images, compute_tour, get_panoramic_image, \
     get_raw_images
 
@@ -12,6 +15,7 @@ def test_compute_tour(client):
     compute_tour(client, tour_name)
 
     pano_image_path = get_panoramic_image(client, tour_name, 1)['server_file_path']
+    pano_image_path = os.path.join(app.config['UPLOAD_FOLDER'], pano_image_path)
     # pano_image_path = r"C:\Users\Ivo\Documents\spring2023\virotour\flask\uploads\panoramic_images\T_1_L_1_pano.png"
 
     img = Image.open(pano_image_path)
