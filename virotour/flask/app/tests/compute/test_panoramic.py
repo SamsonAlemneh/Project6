@@ -1,7 +1,7 @@
-from app.api.compute.panoramic import compute_panoramic
-from app.tests.images.image_utils import upload_images
+from PIL import Image
+from app.api.compute.compute import compute_panoramic
 from app.tests.images.test_add_images import get_image_paths
-from app.tests.tour.tour_utils import add_tour
+from app.tests.common_utils import add_tour, upload_images, get_panoramic_image
 
 
 def test_compute_panoramic(client):
@@ -12,4 +12,3 @@ def test_compute_panoramic(client):
 
     data = compute_panoramic(tour_name, 1)
 
-    assert True == False

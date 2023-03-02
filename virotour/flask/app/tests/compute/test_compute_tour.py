@@ -1,7 +1,9 @@
-from app.tests.compute.compute_utils import compute_tour
-from app.tests.images.image_utils import upload_images
-from app.tests.images.test_add_images import get_image_paths
-from app.tests.tour.tour_utils import add_tour
+import os
+
+from PIL import Image
+from app import app
+from app.tests.common_utils import add_tour, get_image_paths, upload_images, compute_tour, get_panoramic_image, \
+    get_raw_images
 
 
 def test_compute_tour(client):
@@ -12,4 +14,16 @@ def test_compute_tour(client):
 
     compute_tour(client, tour_name)
 
-    assert True == False
+    # Test get relative image path
+    pano_image_path = get_panoramic_image(client, tour_name, 1)['server_file_path']
+    assert pano_image_path == 'panoramic_images/T_1_L_1_pano.png'
+
+    # Test image exists and is openable
+    pano_image_path = os.path.join(app.config['UPLOAD_FOLDER'], pano_image_path)
+    img = Image.open(pano_image_path)
+    # img.show()
+
+    # Test that we can still retrieve the original images if needed
+    data = get_raw_images(client, "Tour 1", 1)
+    assert data['count'] == 5
+    assert data['server_file_paths'][0] == 'raw_images/T_1_L_1_S1.jpg'

@@ -1,7 +1,6 @@
 from app.api.compute.image_blur_faces import image_blur_faces
-from app.tests.images.image_utils import upload_images
 from app.tests.images.test_add_images import get_image_paths
-from app.tests.tour.tour_utils import add_tour
+from app.tests.common_utils import add_tour, upload_images
 
 
 def test_image_blur_faces(client):
