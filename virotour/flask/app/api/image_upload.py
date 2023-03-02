@@ -70,13 +70,25 @@ def api_get_tour_images(tour_name, location_id):
 
 def api_set_panoramic_image(tour_name, location_id, path):
     """This is an internal call, so there is not a publically facing route."""
-    # TODO
+    # Get Tour
+    tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
+    # Get Location
+    location = db.session.query(Location).filter((Location.tour_id == tour.id) &
+                                                 (Location.location_id == location_id)).first()
+    location.pano_file_path = path
+    db.session.commit()
     return None
 
 
 @app.route('/api/tour/images/panoramic-image/<string:tour_name>/<int:location_id>', methods=['POST', 'GET'])
 def api_get_set_panoramic_image(tour_name, location_id):
+    # Get Tour
+    tour = db.session.query(Tour).filter(Tour.name == tour_name).first()
+    # Get Location
+    location = db.session.query(Location).filter((Location.tour_id == tour.id) &
+                                                 (Location.location_id == location_id)).first()
+    pano_image = location.pano_file_path
     payload = {
-        'server_file_path': 'TODO'
+        'server_file_path': pano_image
     }
     return jsonify(payload), 200

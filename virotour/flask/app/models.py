@@ -19,7 +19,8 @@ class Location(db.Model):
     __tablename__ = 'locations_table_v1'
 
     location_id = db.Column(db.Integer, primary_key=True)
-    tour_id = db.Column(db.Integer)   
+    tour_id = db.Column(db.Integer)
+    pano_file_path = db.Column(db.String(255))
     
     def __init__(self, tour_id):
         self.tour_id = tour_id

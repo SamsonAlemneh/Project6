@@ -105,7 +105,7 @@ def compute_tour_with_resp(client, name):
 
 
 def get_panoramic_image(client, tour_name, location_id):
-    return parse_http_response(get_raw_images_with_resp(client, tour_name, location_id))
+    return parse_http_response(get_panoramic_image_with_resp(client, tour_name, location_id))
 
 
 def get_panoramic_image_with_resp(client, tour_name, location_id):

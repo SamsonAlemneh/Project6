@@ -24,6 +24,6 @@ def test_compute_tour(client):
     # img.show()
 
     # Test that we can still retrieve the original images if needed
-    data = get_raw_images(client, "Tour 1", 1)
+    data = get_raw_images(client, "tour-1", 1)
     assert data['count'] == 5
     assert data['server_file_paths'][0] == 'raw_images/T_1_L_1_S1.jpg'
