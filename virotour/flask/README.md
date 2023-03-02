@@ -54,8 +54,6 @@ Then run ```Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process``` and tr
 pip install -r requirements.txt --user
 ```
 
-### Install pytorch
-
 ## Run Tests
 
 To run all tests
