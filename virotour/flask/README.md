@@ -11,7 +11,7 @@ Import the project from THIS folder (flask)
 
 ### 1. Python Required Version: 3.9
 
-It must e
+We have a dependency on a library called "easyorc", and it requires python 3.9 or lower.
 
 #### We recommended to install Anaconda
 
