@@ -43,7 +43,7 @@ def image_extract_text(tour_name, location_id):
     # }
 
     # the argument in the below function should be the computed paranomic image that was created above (harcoded path at the moment)
-    extractTextList = compute_extracted_text_list('../../tests/images/input_images/location1/museum.jpg')
+    extractTextList = compute_extracted_text_list('../../tests/images/input_images/location2/museum.jpg')
     
     return extractTextList
 

@@ -12,7 +12,6 @@ from flask import jsonify, redirect, url_for
 
 @app.route('/api/compute-tour/<string:tour_name>', methods=['GET'])
 def api_compute_tour(tour_name):
-    assert 1 == 1
     tour_id = api_get_tour_by_name(tour_name)[0].json['id']
 
     # For all locations, compute panoramic_images image
