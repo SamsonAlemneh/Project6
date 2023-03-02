@@ -52,12 +52,12 @@ def compute_extracted_text_list(image_url):
     reader = easyocr.Reader(['en'])
     result = reader.readtext(image_url)
 
-    for text in result:
+    for textObj in result:
         # the [x, y] coordinates of the four corners that encapsulates the extracted text
-        bottomLeftCoords = text[0][0]
-        bottomRightCoords = text[0][1]
-        topRightCoords = text[0][2]
-        topLeftCoords = text[0][3]
+        bottomLeftCoords = textObj[0][0]
+        bottomRightCoords = textObj[0][1]
+        topRightCoords = textObj[0][2]
+        topLeftCoords = textObj[0][3]
 
         # determine average x and y coordiantes based on the width and height of encapture box that surrounds extracted text
         averagePositionX = round((topRightCoords[0] + topLeftCoords[0]) / 2)
@@ -65,7 +65,7 @@ def compute_extracted_text_list(image_url):
 
         currentExtractedTextObj = {
             "position": { "x": averagePositionX, "y": averagePositionY, "z": 0 },
-            "content": text[1]
+            "content": textObj[1]
         } 
         
         listOfExtractedTexts.append(currentExtractedTextObj)
