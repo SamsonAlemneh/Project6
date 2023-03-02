@@ -1,6 +1,5 @@
 from app.api.compute.image_extract_text import image_extract_text, compute_extracted_text_list
 from app.tests.common_utils import add_tour, get_image_path, upload_images
-import os
 
 def test_extract_text_from_image_with_text(client):
     #tour_name = "Tour 1"
@@ -12,7 +11,7 @@ def test_extract_text_from_image_with_text(client):
 
     data = compute_extracted_text_list(get_image_path('input_images/location1/museum.jpg'))
 
-    assert len(data) == 15      # easyocr found 15 extracted text objects in this specific image (hard coded in image_extract_text; still
+    assert len(data) == 14      # easyocr found 15 extracted text objects in this specific image (hard coded path for now; still
                                 # awaiting computed panoramic image)
 
     for currentText in data:
