@@ -33,7 +33,7 @@ Windows:
 
 - Python versions: 3.8, 3.9.13
 
-Linx:
+Linux:
 
 - Python versions: 3.9.13
 
