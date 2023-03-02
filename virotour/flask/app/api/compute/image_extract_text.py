@@ -74,8 +74,7 @@ def compute_extracted_text_list(image_url):
 
             currentExtractedTextObj = {
                 "position": { "x": averagePositionX, "y": averagePositionY, "z": 0 },
-                "content": textObj[1],
-                "confidence level": textObj[2]
+                "content": textObj[1]
             } 
             
             listOfExtractedTexts.append(currentExtractedTextObj)
