@@ -12,6 +12,8 @@ The text extraction library used is Easyocr: https://github.com/JaidedAI/EasyOCR
 
 One of the prerequisites libaries needed to have Easyocr working (for Windows specifically) is PyTorch: https://pytorch.org/. For non-windows, it seems PyTorch may not be needed (not tested thoroughly, however).
 
+**Note**: This PyTorch pre-requisite (on Windows) for Easyocr is defined in their installation guide here: https://github.com/JaidedAI/EasyOCR#installation.
+
 For Windows users that run on Python version 3.11.2 (the latest as of 3/1/2023) and try to download PyTorch by running the following command in the terminal (_note: this command came auto-generated from selected custom options at https://pytorch.org/_):
 
 ```
