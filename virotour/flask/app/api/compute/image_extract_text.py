@@ -27,7 +27,7 @@ def image_extract_text(tour_name, location_id):
         
     image_list = api_get_tour_images(tour_name, location_id)
 
-    # call function that creates returns a panoramic image (created from all images in the server_file_paths variable.
+    # NEEDED: call a function that creates returns a panoramic image (created from all images in the server_file_paths variable.
 
     # return extracted text's [x,y] coordinates and respective text from created panoramic image.
     # the return value should be an array of objects, one example below:
@@ -41,12 +41,16 @@ def image_extract_text(tour_name, location_id):
     #     "content": "Bathrooms"
     # }
 
-    # computing text extract on the to-be panoramic image (placeholder image for now)
-    reader = easyocr.Reader(['en'])
-    result = reader.readtext('../../tests/images/input_images/location1/museum.jpg')
-    # result = reader.readtext('../../tests/images/input_images/location1/S2.jpg')
+    # the argument in the below function should be the computed paranomic image that was created above (harcoded path at the moment)
+    extractTextList = compute_extracted_text_list('../../tests/images/input_images/location1/museum.jpg')
+    
+    return extractTextList
+
+def compute_extracted_text_list(image_url): 
 
     listOfExtractedTexts = []
+    reader = easyocr.Reader(['en'])
+    result = reader.readtext(image_url)
 
     for text in result:
         # the [x, y] coordinates of the four corners that encapsulates the extracted text
