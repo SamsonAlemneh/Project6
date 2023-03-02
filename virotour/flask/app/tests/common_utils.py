@@ -88,6 +88,12 @@ def get_image_paths(path):
     pass
 
 
+def get_image_path(relative_path):
+    """Get image path from 'images' folder"""
+    image_path = os.path.join(os.path.dirname(__file__), 'images', relative_path)
+    return image_path
+
+
 def get_raw_images(client, tour_name, location_id):
     return parse_http_response(get_raw_images_with_resp(client, tour_name, location_id))
 

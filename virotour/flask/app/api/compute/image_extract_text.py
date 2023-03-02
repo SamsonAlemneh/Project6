@@ -27,8 +27,9 @@ def image_extract_text(tour_name, location_id):
         
     image_list = api_get_tour_images(tour_name, location_id)
 
-    # NEEDED: call a function that creates returns a panoramic image (created from all images in the server_file_paths variable.
-
+    # NEEDED: call a function that creates and returns a panoramic image (created from all images in the server_file_paths variable.
+    #panoramic_img = ...
+    
     # return extracted text's [x,y] coordinates and respective text from created panoramic image.
     # the return value should be an array of objects, one example below:
 
@@ -52,20 +53,23 @@ def compute_extracted_text_list(image_url):
     reader = easyocr.Reader(['en'])
     result = reader.readtext(image_url)
 
+    # Note: explore confidence percentage level / threshold (0.05)
+
     for textObj in result:
         # the [x, y] coordinates of the four corners that encapsulates the extracted text
-        bottomLeftCoords = textObj[0][0]
+        bottomLeftCoords = textObj[0][0]                                                        
         bottomRightCoords = textObj[0][1]
         topRightCoords = textObj[0][2]
         topLeftCoords = textObj[0][3]
 
-        # determine average x and y coordiantes based on the width and height of encapture box that surrounds extracted text
+        # determine average x and y coordinates based on the width and height of encapture box that surrounds extracted text
         averagePositionX = round((topRightCoords[0] + topLeftCoords[0]) / 2)
         averagePositionY = round((topLeftCoords[1] + bottomLeftCoords[1]) / 2)
 
         currentExtractedTextObj = {
             "position": { "x": averagePositionX, "y": averagePositionY, "z": 0 },
-            "content": textObj[1]
+            "content": textObj[1],
+            "confidence level": textObj[2]
         } 
         
         listOfExtractedTexts.append(currentExtractedTextObj)
