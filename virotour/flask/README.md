@@ -77,22 +77,4 @@ To run integration tests. This will populate test data.
 pytest app/integration_tests
 ```
 
-Navigate to `api/site-map` to access the REST APIs.
-
-See [app\apis.py](vsp/apis.py) for complete supported REST APIs operation.
-
-Example of REST API endpoints:
-
-```
-/api/                  -- [GET] hello world
-/api/tours             -- [GET] get list of tours
-/api/tour/<id>         -- [GET] get tour by id
-/api/tour-name/<name>  -- [GET] get tour by name
-/api/tour/add          -- [POST] add new tour with JSON data payload:
-/api/update/tour/<id>  -- [POST/PUT] update tour by id with JSON data payload
-/api/delete/tour/<id>  -- [POST/DELETE] delete tour by id
-/api/tour/add/images/  -- [POST] upload images to server
-/api/tour/images/raw-images/<string:tour_name>/<int:location_id>  -- [GET] Retrieve raw image paths for a given tour name and location_id
-/api/tour/images/panoramic/<string:tour_name>/<int:location_id>  -- [GET] Retrieve panoramic image 
-/api/tour/images/panoramic/<string:tour_name>/<int:location_id>  -- [GET] Retrieve panoramic image 
-```
+Navigate to `/apidocs/` to access the documentation.

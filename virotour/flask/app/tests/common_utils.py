@@ -20,7 +20,7 @@ def get_tour_by_name_with_resp(client, name):
 
 def add_tour(client, name, description):
     return parse_http_response(
-        client.post('/api/add/tour', json={
+        client.post('/api/tour/add', json={
             'name': name,
             'description': description
         })
@@ -38,7 +38,7 @@ def update_tour_with_resp(client, name, description):
 
     tour = parse_http_response(resp)
     id = tour['id']
-    resp = client.post(f'/api/update/tour/{id}', json={
+    resp = client.post(f'/api/tour/update/{id}', json={
         'name': name,
         'description': description
     })
@@ -57,7 +57,7 @@ def delete_tour_with_resp(client, name, description):
 
     tour = parse_http_response(resp)
     id = tour['id']
-    resp = client.post(f'/api/delete/tour/{id}', json={
+    resp = client.post(f'/api/tour/delete{id}', json={
         'name': name,
         'description': description
     })
@@ -70,15 +70,8 @@ def upload_images(client, name, image_list):
 
 
 def upload_images_with_resp(client, name, image_list):
-    files = []
-    try:
-        files = [open(fpath, 'rb') for fpath in image_list]
-        return client.post(f'/api/add/tour/images/{name}', data={
-            'files[]': files
-        })
-    finally:
-        for fp in files:
-            fp.close()
+    files = {fpath: open(fpath, 'rb') for fpath in image_list}
+    return client.post(f'/api/tour/add/images/{name}', data=files)
 
 
 def get_image_paths(path):
@@ -126,6 +119,22 @@ def set_panoramic_image_with_resp(client, tour_name, location_id, path):
     return client.post(f'/api/tour/images/panoramic-image/{tour_name}/{location_id}', data={
         'panoramic_path': path
     })
+
+
+def get_search_results(client, search_input):
+    return parse_http_response(get_search_results_with_resp(client, search_input))
+
+
+def get_search_results_with_resp(client, search_input):
+    return client.get(f'/api/tour/search/{search_input}')
+
+
+def get_tour_locations(client, search_input):
+    return parse_http_response(get_tour_locations_with_resp(client, search_input))
+
+
+def get_tour_locations_with_resp(client, tour_name):
+    return client.get(f'/api/tour/locations/{tour_name}')
 
 
 def parse_http_response(resp):

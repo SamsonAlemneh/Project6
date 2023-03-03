@@ -15,40 +15,42 @@ class Tour(db.Model):
     def __repr__(self):
         return '<Tour %r>' % self.name
 
+
 class Location(db.Model):
     __tablename__ = 'locations_table_v1'
 
     location_id = db.Column(db.Integer, primary_key=True)
     tour_id = db.Column(db.Integer)
     pano_file_path = db.Column(db.String(255))
-    
+
     def __init__(self, tour_id):
         self.tour_id = tour_id
 
     def __repr__(self):
         return '<Locations %r>' % self.location_id
-    
+
+
 class Image(db.Model):
     __tablename__ = 'images_table_v1'
 
     image_id = db.Column(db.Integer, primary_key=True)
     location_id = db.Column(db.Integer)
     file_path = db.Column(db.String(255))
-    
+
     def __init__(self, location_id, file_path):
         self.location_id = location_id
         self.file_path = file_path
 
-
     def __repr__(self):
         return '<Images %r>' % self.image_id
-    
+
+
 class Text(db.Model):
     __tablename__ = 'extracted_text_table_v1'
 
     text_id = db.Column(db.Integer, primary_key=True)
     location_id = db.Column(db.Integer)
-    text_content = db.Column(db.String(255))
+    text_content = db.Column(db.String(8000))
     position_x = db.Column(db.Integer)
     position_y = db.Column(db.Integer)
     position_z = db.Column(db.Integer)
@@ -62,4 +64,3 @@ class Text(db.Model):
 
     def __repr__(self):
         return '<Text %r>' % self.text_id
-    

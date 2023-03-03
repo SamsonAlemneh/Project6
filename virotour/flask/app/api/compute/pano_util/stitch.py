@@ -10,14 +10,14 @@ from __future__ import print_function
 
 import argparse
 import os
-import re
+import shutil
 import sys
 from collections import OrderedDict
 
 import cv2 as cv
 import numpy as np
-from app import app
-import matplotlib.pyplot as plt
+
+from app.api.image_upload import api_upload_resolve_path
 
 EXPOS_COMP_CHOICES = OrderedDict()
 EXPOS_COMP_CHOICES['gain_blocks'] = cv.detail.ExposureCompensator_GAIN_BLOCKS
@@ -286,8 +286,6 @@ def main(in_args):
     args = parser.parse_args(in_args)
     img_names = args.img_names
     output_path = args.output_path
-    print(img_names)
-    print(output_path)
     work_megapix = args.work_megapix
     seam_megapix = args.seam_megapix
     compose_megapix = args.compose_megapix
@@ -322,12 +320,13 @@ def main(in_args):
     is_seam_scale_set = False
     is_compose_scale_set = False
 
-    # Set up samples read location_directory (otherwise it cannot find the file)
-    # location_directory = os.path.dirname(full_path_of_file)
-    # cv.samples.addSamplesDataSearchPath(location_directory)
+    # Only one image? Then assume it is panoramic already
+    if len(img_names) == 1:
+        shutil.copyfile(api_upload_resolve_path(img_names[0]), api_upload_resolve_path(output_path))
+        return
 
     for name in img_names:
-        full_path_of_file = os.path.abspath(os.path.join(app.config["UPLOAD_FOLDER"], name))
+        full_path_of_file = api_upload_resolve_path(name)
 
         full_img = cv.imread(cv.samples.findFile(full_path_of_file))
 
@@ -376,10 +375,6 @@ def main(in_args):
     img_names = img_names_subset
     full_img_sizes = full_img_sizes_subset
     num_images = len(img_names)
-    if num_images < 2:
-        print("Need more images")
-        exit()
-
     estimator = ESTIMATOR_CHOICES[args.estimator]()
     b, cameras = estimator.apply(features, p, None)
     if not b:
@@ -462,7 +457,7 @@ def main(in_args):
     timelapser = None
     # https://github.com/opencv/opencv/blob/4.x/samples/cpp/stitching_detailed.cpp#L725 ?
     for idx, name in enumerate(img_names):
-        full_img = cv.imread(os.path.abspath(os.path.join(app.config["UPLOAD_FOLDER"], name)))
+        full_img = cv.imread(api_upload_resolve_path(name))
         if not is_compose_scale_set:
             if compose_megapix > 0:
                 compose_scale = min(1.0, np.sqrt(compose_megapix * 1e6 / (full_img.shape[0] * full_img.shape[1])))
@@ -526,7 +521,7 @@ def main(in_args):
         result = None
         result_mask = None
         result, result_mask = blender.blend(result, result_mask)
-        full_output_path = os.path.abspath(os.path.join(app.config["UPLOAD_FOLDER"], output_path))
+        full_output_path = api_upload_resolve_path(output_path)
         cv.imwrite(full_output_path, result)
         # zoom_x = 600.0 / result.shape[1]
         # dst = cv.normalize(src=result, dst=None, alpha=255., norm_type=cv.NORM_MINMAX, dtype=cv.CV_8U)
