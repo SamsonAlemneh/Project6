@@ -1,6 +1,7 @@
 from app.api.image_upload import api_get_tour_images
 
 import easyocr
+import cv2
 
 def image_extract_text(tour_name, location_id):
 
@@ -53,6 +54,9 @@ def compute_extracted_text_list(image_url):
     reader = easyocr.Reader(['en'])
     result = reader.readtext(image_url)
 
+    # used for coordinate box around extracted text
+    img = cv2.imread('../../tests/images/input_images/location2/museum.jpg')
+
     # Note: explore confidence percentage level / threshold (0.05)
 
     for textObj in result:
@@ -68,6 +72,16 @@ def compute_extracted_text_list(image_url):
             topRightCoords = textObj[0][2]
             topLeftCoords = textObj[0][3]
 
+            topLeft_startPoint = (int(topLeftCoords[0]), int(topLeftCoords[1]))
+            bottomRight_endPoint = (int(bottomRightCoords[0]), int(bottomRightCoords[1]))
+            bottomLeft_endPoint = (int(bottomLeftCoords[0]), int(bottomLeftCoords[1]))
+            print(topLeft_startPoint)
+
+            # opencv to draw a green rectangle around the current extracted text
+            cv2.rectangle(img, topLeft_startPoint, bottomRight_endPoint, (0, 255, 0), 3)
+            # opencv to place the extracted text context above the respective green rectangle that was just created for visual purposes
+            cv2.putText(img, textObj[1], bottomLeft_endPoint, cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 3, cv2.LINE_AA)
+
             # determine average x and y coordinates based on the width and height of encapture box that surrounds extracted text
             averagePositionX = round((topRightCoords[0] + topLeftCoords[0]) / 2)
             averagePositionY = round((topLeftCoords[1] + bottomLeftCoords[1]) / 2)
@@ -78,5 +92,11 @@ def compute_extracted_text_list(image_url):
             } 
             
             listOfExtractedTexts.append(currentExtractedTextObj)
+
+    # needed to autosize the image to appropriate resolution, based on computer/server running the app
+    cv2.namedWindow('Panoramic Image', cv2.WINDOW_NORMAL)
+    # opencv to show the image
+    cv2.imshow("Panoramic Image", img)
+    cv2.waitKey(0)
 
     return listOfExtractedTexts

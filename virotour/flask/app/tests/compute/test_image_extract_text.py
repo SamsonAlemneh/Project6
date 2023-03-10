@@ -1,11 +1,10 @@
 from app.api.compute.image_extract_text import image_extract_text, compute_extracted_text_list
 from app.tests.common_utils import add_tour, get_image_path, upload_images
 
-
 def test_extract_text_from_image_with_text(client):
     data = compute_extracted_text_list(get_image_path('input_images/location2/museum.jpg'))
 
-    assert len(data) == 13
+    assert len(data) == 14
 
     for currentText in data:
         print(currentText)
