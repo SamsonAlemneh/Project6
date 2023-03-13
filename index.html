@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Canvas Image Editor</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color:azure;
+    }
+
+    header {
+      background-color: blue;
+      color: white;
+      padding: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+
+    }
+
+    canvas {
+      margin: 0 auto;
+      border: 1px solid #000;
+    }
+
+    #labelText,
+    #addLabel,
+    #saveImage {
+      margin: 20px auto 0;
+      display: block;
+      
+    }
+
+    #addLabel,
+    #saveImage{
+        background-color:whitesmoke;
+    }
+
+    #imageLoader{
+        padding-bottom: 10px;
+    }
+    .label {
+      position: absolute;
+      background-color:azure;
+      border: 1px solid #000;
+      padding: 5px;
+      cursor: move;
+    }
+
+  </style>
+</head>
+<body>
+  <header>ViroTour</header>
+  <input type="file" id="imageLoader">
+  <canvas id="canvas"></canvas>
+  <br>
+  <input type="text" id="labelText">
+  <button id="addLabel">Add Label</button>
+  <button id="saveImage">Save Image</button>
+
+  <script>
+    // Initialize canvas and context variables
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let img;
+
+    // Initialize labels array
+    const labels = [];
+
+    // Handle image upload
+    const imageLoader = document.getElementById('imageLoader');
+    imageLoader.addEventListener('change', handleImage, false);
+
+    function handleImage(e) {
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        img = new Image();
+        img.onload = function () {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+
+          // Draw existing labels
+          labels.forEach(label => {
+            drawLabel(label);
+          });
+        }
+        img.src = event.target.result;
+      }
+      reader.readAsDataURL(e.target.files[0]);
+    }
+
+    // Handle label adding
+    const labelText = document.getElementById('labelText');
+    const addLabel = document.getElementById('addLabel');
+    addLabel.addEventListener('click', addNewLabel, false);
+
+    function addNewLabel() {
+      const label = {
+        text: labelText.value,
+        x: 10,
+        y: 50
+      };
+      labels.push(label);
+      drawLabel(label);
+    }
+
+    function drawLabel(label) {
+      const labelEl = document.createElement('div');
+      labelEl.className = 'label';
+      labelEl.textContent = label.text;
+      labelEl.style.left = label.x + 'px';
+      labelEl.style.top = label.y + 'px';
+      document.body.appendChild(labelEl);
+
+      // Make label draggable
+      let isDragging = false;
+      let dragOffsetX;
+      let dragOffsetY;
+      labelEl.addEventListener('mousedown', handleMouseDown);
+      labelEl.addEventListener('mousemove', handleMouseMove);
+      labelEl.addEventListener('mouseup', handleMouseUp);
+
+      function handleMouseDown(e) {
+        isDragging = true;
+        dragOffsetX = e.offsetX;
+        dragOffsetY = e.offsetY;
+      }
+
+      function handleMouseMove(e) {
+        if (isDragging) {
+          const x = e.pageX - dragOffsetX;
+          const y = e.pageY - dragOffsetY;
+          label.x = x;
+          label.y = y;
+          labelEl.style.left = x + 'px';
+          labelEl.style.top = y + 'px';
+          redrawLabels();
+        }
+      }
+
+      function handleMouseUp() {
+        isDragging = false;
+      }
+    }
+
+    function redrawLabels() {
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw image
+      ctx.drawImage(img, 0, 0);
+
+      // Draw labels
+      labels.forEach(label => {
+        ctx.font = '24px Arial';
+        ctx.fillStyle = '#000';
+        ctx.fillText(label.text
+        , label.x, label.y);
+
+      });
+    }
+
+    // Handle image saving
+    const saveImage = document.getElementById('saveImage');
+    saveImage.addEventListener('click', saveCanvas, false);
+
+    function saveCanvas() {
+      const dataURL = canvas.toDataURL();
+      const link = document.createElement('a');
+      link.download = 'canvas.png';
+      link.href = dataURL;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+</body>
+</html>
