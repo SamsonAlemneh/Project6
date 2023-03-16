@@ -61,6 +61,10 @@ class TableRepository:
     def permanent_delete(self, entity):
         self.db.session.delete(entity)
         self.db.session.commit()
+
+    def permanent_delete1(self, entity):
+        self.db.session.delete(entity)
+        self.db.session.commit()
         
         
     #usage
