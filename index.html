@@ -1,7 +1,50 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Add Text to Photo</title>
+    <title>Add Informational Hotspot</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+      .title {
+        width: 100%;
+        background-color: blue;
+        color: #fff;
+        padding: 10px;
+        position: fixed;
+        top: 0;
+        left: 0;
+      }
+      #canvas-container {
+        position: relative;
+        display: inline-flex;
+        margin-left: 20px;
+      }
+      #canvas {
+        border: 1px solid black;
+        
+      }
+      .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        width: 100%;
+        max-width: 400px;
+        padding: 10px;
+      }
+      .button-container button {
+        flex: 1;
+        margin: 0 5px;
+        padding: 10px;
+        margin: 10px;
+      }
+    </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
     <script>
       window.onload = () => {
@@ -43,8 +86,17 @@
     </script>
   </head>
   <body>
-    <h1>Add Text to Photo</h1>
-    <div>
+    <div class="title">
+      <h1 style="text-align: center;">Add Informational Hotspot</h1>
+    </div>
+    <div id="canvas-container">
+      <canvas id="canvas"></canvas>
+    </div>
+    <div class="button-container">
+      <button id="addTextButton">Add Text</button>
+      <button id="saveButton">Save Image</button>
+    </div>
+    <div style="color:blue;text-align:center;padding: 10px;">
       <label for="fileInput">Choose a photo:</label>
       <input type="file" id="fileInput">
     </div>
@@ -52,8 +104,5 @@
       <label for="textInput">Add text:</label>
       <input type="text" id="textInput">
     </div>
-    <canvas id="canvas"></canvas>
-    <button id="addTextButton">Add Text</button>
-    <button id="saveButton">Save Image</button>
   </body>
 </html>
