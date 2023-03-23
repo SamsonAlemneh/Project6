@@ -196,7 +196,7 @@ class _TourDetailsViewState extends State<TourDetailsView> {
           },
 
           "hallLeft": {
-              "title": "Second location",
+              "title": "Walkway",
               "hfov": 180,
               "yaw": 0,
               "type": "equirectangular",
@@ -205,7 +205,7 @@ class _TourDetailsViewState extends State<TourDetailsView> {
           },
 
           "blackbird": {
-              "title": "Second location",
+              "title": "Blackbird",
               "hfov": 180,
               "yaw": 0,
               "type": "equirectangular",
